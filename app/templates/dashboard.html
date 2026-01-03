@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Roaster | Luiz Martins</title>
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --text: #c9d1d9; --accent: #ff7b72; --green: #3fb950; }
+        body { font-family: 'Segoe UI', monospace; background: var(--bg); color: var(--text); padding: 2rem; max-width: 1000px; margin: auto; }
+        h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .container { display: flex; flex-direction: column; gap: 20px; }
+        .upload-box { background: var(--card); padding: 2rem; border-radius: 8px; border: 1px dashed #30363d; text-align: center; }
+        button { background: var(--green); color: white; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 6px; }
+        button:hover { opacity: 0.9; }
+        .error { background: #ff7b7233; color: var(--accent); padding: 1rem; border-radius: 6px; }
+        .roast-box { background: #21262d; padding: 1.5rem; border-left: 4px solid var(--accent); margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+        th { background: #161b22; }
+        .download-btn { display: inline-block; margin-top: 20px; background: #1f6feb; padding: 10px 20px; color: white; text-decoration: none; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h1>🥩 Data Roaster <span style="font-size:0.5em; color:#8b949e">by Luiz Martins</span></h1>
+    <p>Pipeline de validação automatizada e profiling de dados industriais.</p>
+
+    <div class="container">
+        <div class="upload-box">
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".csv,.xlsx">
+                <button type="submit">ANALISAR DATASET</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="error">❌ Erro: {{ error }}</div>
+        {% endif %}
+
+        {% if roast %}
+        <div class="roast-box">
+            <h3>🛡️ Veredito de Qualidade:</h3>
+            <ul>
+                {% for item in roast %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+            {% if pdf_link %}
+            <a href="/download/{{ pdf_link }}" class="download-btn">📄 Baixar Relatório PDF</a>
+            {% endif %}
+        </div>
+
+        <h3>📊 Métricas Técnicas</h3>
+        <table>
+            <tr><th>Métrica</th><th>Valor</th></tr>
+            <tr><td>Shape</td><td>{{ report.shape }}</td></tr>
+            <tr><td>Memória</td><td>{{ report.memory_mb }} MB</td></tr>
+            <tr><td>Duplicatas</td><td>{{ report.duplicates }}</td></tr>
+        </table>
+        
+        <h4>Integridade (Nulos por Coluna)</h4>
+        <table>
+            {% for col, pct in report.null_percent.items() %}
+            <tr><td>{{ col }}</td><td>{{ pct }}%</td></tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
