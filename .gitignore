@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 reports/*.pdf
 .env
+.pytest_cache/
