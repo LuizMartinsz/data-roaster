@@ -132,6 +132,7 @@ data-roaster/
 ├── requirements.txt
 ├── run.py              # Entry Point
 └── README.md
+```
 
 ## 👨‍💻 About the Author
 
@@ -142,3 +143,4 @@ I build tools that bridge the gap between legacy industrial systems (JD Edwards,
 
 
 *Built for portfolio demonstration. Clean Code | OOP | Secure.*
+
